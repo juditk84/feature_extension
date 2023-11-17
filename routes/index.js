@@ -27,7 +27,8 @@ async function sendMail(email_address, text) {
       // remove email_address and array brackets from "to:" to stop actually sending
     const message = {
       from: `${process.env.MASTER_EMAIL}`,
-      to: [`${process.env.MASTER_EMAIL}`, `${email_address}`],
+      // to: [`${process.env.MASTER_EMAIL}`, `${email_address}`],
+      to: `${process.env.MASTER_EMAIL}`,
       subject: 'Un mensaje de Las Verdas Co.',
       text: `${text}`,
       html: `<p> ${text} </p><br /> <br />
@@ -66,6 +67,30 @@ router.get('/createmail/:id', async (req, res) =>{
   }
 })
 
+// grabs each users list of messages.
+router.get('/messages/:user_id', async (req, res, next) =>{
+  
+  try{
+    const data = await db(`SELECT * FROM messages WHERE user_id = ${req.params.user_id}`)
+
+    res.send(data)
+
+  }catch(err){ res.status(400).send(err)}
+
+})
+
+router.post('/messages/', async (req, res, next) =>{
+  
+  try{
+    const data = await db(`INSERT INTO messages (sent_to, body, user_id) VALUES ("${req.body.sent_to}", "${req.body.body}", "${req.body.user_id}");`)
+
+    res.send(data)
+
+  }catch(err){ res.status(400).send(err)}
+
+})
+
+
 async function getMagic(id) {
   try {
     const res = await db(`SELECT * FROM magics WHERE id=${id};`)
@@ -80,6 +105,7 @@ async function getRandomPolitician() {
   try {
     const rando = await db("SELECT * FROM politicians ORDER BY RAND() LIMIT 1;")
     const politician = rando.data[0]
+
     return politician
   } catch (err) {
     console.log({ msg : "we could not get a random politician in this day and age"})
@@ -145,8 +171,7 @@ async function createMailWithParams(magic){
               Entre 3 y 5 frases. Pretende que lo visto en la página web ha sido leído en las noticias.
               Hola {nombre}, le escribo sobre {tema}. Creo que {porqué es importante}, y quiero sugerir {política concreta}. 
               Cordialmente,
-              Las Verdas Co.
-             `,
+              Las Verdas Co.`,
         max_tokens: 250,
         best_of: 3,
         temperature: 0.2,  /// from 0 to 2 how funky do you want it (actually makes it kinda loopy)

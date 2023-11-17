@@ -5,8 +5,17 @@
   text-align: center;
 }
 
+.messages_list{
+  text-align: left;
+}
 
 
+.message{
+
+  border: 5px dashed #A4A19D;
+  border-radius: 22px;
+  margin: 10px;
+}
 
 .card {
   padding: 2em;

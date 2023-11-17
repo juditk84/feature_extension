@@ -5,13 +5,14 @@ import ChooseMagic from '../components/ChooseMagic.jsx'
 import MessageSent from '../components/MessageSent.jsx'
 // import CrystalBall from '../components/CrystalBallSprite.jsx'
 
-
-export default function SendMailPage() {
+export default function SendMailPage({userId}) {
   const [data, setData] = useState([])
   const [error, setError] = useState("");
   const [magicID, setMagic] = useState(1)
   const [loading, setLoading] = useState(false)
   const [ready, setReady] = useState(false)
+
+  // const [message, setMessage] = useState({sentTo: "", body: ""});
 
 async function getData() {
   try {
@@ -19,10 +20,32 @@ async function getData() {
     if (!res.ok) throw new Error(`Oops! ${res.status} ${res.statusText}`)
     const data = await res.json()
     setData(data)
+    
+    addMessageToDatabaseLikeAChampion(data.politician.name, data.message); //did it like this otherwise it didn't work
   } catch (error) {
     setError(error.message)
   } 
 }
+
+const addMessageToDatabaseLikeAChampion = async (sent_to, body) => {
+  try {
+    const response = await fetch(`/api/messages/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sent_to: sent_to, body: body, user_id: userId }),
+      // body: JSON.stringify({ sent_to: data?.politician?.name, body: data?.message, user_id: userId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.message);
+
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
 async function handleClick (event) {
   event.preventDefault()

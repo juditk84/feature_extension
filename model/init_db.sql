@@ -34,6 +34,13 @@ CREATE TABLE suggestions(
     suggestion VARCHAR(50) not null
 );
 
+CREATE TABLE `users`(
+	`id` INT NOT NULL AUTO_INCREMENT, 
+	`username` VARCHAR(255) NOT NULL, 
+	`password` VARCHAR(255) NOT NULL, 
+	PRIMARY KEY (id)
+);
+
 INSERT INTO magics (magic) VALUES ('cambio climatico');
 INSERT INTO magics (magic) VALUES ('problemas de vivienda');
 INSERT INTO magics (magic) VALUES ('politicas sociales');
