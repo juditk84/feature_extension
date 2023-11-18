@@ -79,17 +79,35 @@ router.get('/messages/:user_id', async (req, res, next) =>{
 
 })
 
+// insert current message into the messages db taking the user_id into account
 router.post('/messages/', async (req, res, next) =>{
   
   try{
-    const data = await db(`INSERT INTO messages (sent_to, body, user_id) VALUES ("${req.body.sent_to}", "${req.body.body}", "${req.body.user_id}");`)
+    const messageFromPolitician = await createProblematicPolititianMessageToCitizen(req.body.type, req.body.tone, req.body.goal);
+    
+    const data = await db(`INSERT INTO messages (sent_to, body, user_id, type, tone, goal) VALUES 
+    ("${req.body.sent_to}", "${req.body.sent_to === "all_citizens" ? messageFromPolitician : req.body.body}", 
+    "${req.body.user_id}", "${req.body.type}", "${req.body.tone}", "${req.body.goal}");`)
 
     res.send(data)
 
   }catch(err){ res.status(400).send(err)}
 
+
+
 })
 
+// delete one message clicking the DELETE button from the list of messages.
+router.delete('/messages/delete/:id', async (req, res, next) =>{
+  
+  try{
+    const data = await db(`DELETE FROM messages WHERE id=${req.params.id};`)
+
+    res.send("message deleted!")
+
+  }catch(err){ res.status(400).send(err)}
+
+})
 
 async function getMagic(id) {
   try {
@@ -143,6 +161,7 @@ async function updateMsgsSentSpecificPolitician(id) {
   }
 }
 
+
 async function createMailWithParams(magic){
 
     const politician = await getRandomPolitician()
@@ -152,7 +171,6 @@ async function createMailWithParams(magic){
     const name = politician.name
     const chosenMagic = magic.magic
 
-  
     // const data = { politician : politician, message: "this is a test", magic: chosenMagic}
     
     // return data
@@ -186,8 +204,40 @@ async function createMailWithParams(magic){
     } catch (err) {
       return "chatGPT doesn't want to play"
     }
-    
 }
+
+async function createProblematicPolititianMessageToCitizen(type, tone, goal){
+
+    try {
+      console.log("trying...")
+      const completion = await openai.completions.create({
+        model: "gpt-3.5-turbo-instruct",
+        prompt: `Pretend you're a ${type} and write a message to your citizens.
+              The tone of the message has to be ${tone}
+              The goal of the message has to be to ${goal}
+              Desired format:
+
+              between 3 and 5 frases.
+              Write it always in English, limit the output to 2000 characters tops.`,
+        max_tokens: 250,
+        best_of: 3,
+        temperature: 0.8,  /// from 0 to 2 how funky do you want it (actually makes it kinda loopy)
+        frequency_penalty: 0.7, // from 2 (min) to -2 (max), how much do you want it to use new words 
+      })
+      
+      console.log("...done")
+      const data = completion.choices[0].text;
+      
+      console.log(completion)
+
+      return data
+  
+    } catch (err) {
+      return "chatGPT doesn't want to play"
+    }
+}
+
+
 
 
 router.get("/politicians/total_msgs", async (req, res) => {

@@ -5,7 +5,7 @@ import ChooseMagic from '../components/ChooseMagic.jsx'
 import MessageSent from '../components/MessageSent.jsx'
 // import CrystalBall from '../components/CrystalBallSprite.jsx'
 
-export default function SendMailPage({userId}) {
+export default function SendMailPage({userData}) {
   const [data, setData] = useState([])
   const [error, setError] = useState("");
   const [magicID, setMagic] = useState(1)
@@ -34,8 +34,7 @@ const addMessageToDatabaseLikeAChampion = async (sent_to, body) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ sent_to: sent_to, body: body, user_id: userId }),
-      // body: JSON.stringify({ sent_to: data?.politician?.name, body: data?.message, user_id: userId }),
+      body: JSON.stringify({ sent_to: sent_to, body: body, user_id: userData.user_id, type: "", tone: "", goal: "" }),
     });
 
     const data = await response.json();

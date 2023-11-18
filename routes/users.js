@@ -41,14 +41,16 @@ router.post("/login", async (req, res) => {
     );
     const user = results.data[0];
     if (user) {
+      const user_name = user.username
       const user_id = user.id;
+      const user_type = user.type
 
       const correctPassword = await bcrypt.compare(password, user.password);
 
       if (!correctPassword) throw new Error("Incorrect password");
 
       var token = jwt.sign({ user_id }, supersecret);
-      res.send({ message: "Login successful, here is your token", token, user_id });
+      res.send({ message: "Login successful, here is your token", token, user_name, user_id, user_type });
     } else {
       throw new Error("User does not exist");
     }

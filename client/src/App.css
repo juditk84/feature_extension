@@ -24,3 +24,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.ultra_confidential_area{
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.politician_form{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* gap: 3px; */
+  /* grid-auto-rows: minmax(100px, auto); */
+}
+
+.politician_form_labels{
+  text-align: right;
+  grid-column: 1 / 2;
+  /* grid-row: 1; */
+}
+
+.politician_form_fields{
+  grid-column: 2 / 2;
+  /* grid-row: 2; */
+}

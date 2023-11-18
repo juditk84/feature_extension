@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom'
 import Register from '../components/Register';
 
-export default function LoginPage({ setIsLoggedIn, setUserId }) {
+export default function LoginPage({ setIsLoggedIn, setUserData }) {
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -42,11 +42,9 @@ useEffect(() => {}, [])
       
           //store it locally
           localStorage.setItem("token", data.token);
-          console.log(data.message, data.token);
-          navigate({pathname: "/MainMenu"});
-          console.log(data);
           setIsLoggedIn(true);
-          setUserId(data.user_id);
+          setUserData(data);
+          navigate({pathname: "/MainMenu"});
         } catch (error) {
           console.log(error);
         }

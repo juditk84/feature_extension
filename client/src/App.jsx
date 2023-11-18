@@ -8,6 +8,7 @@ import TotalMsgs from "./components/TotalMsgs"
 import LoginPage from "./pages/LoginPage"
 import Register from "./components/Register"
 import CivilianArea from "./pages/CivilianArea"
+import PoliticianArea from "./pages/PoliticianArea"
 
 // import { Animated, Text, View, StyleSheet, Button, SafeAreaView } from 'react-native'
 import { useRef, useState } from 'react'
@@ -15,20 +16,21 @@ import { useRef, useState } from 'react'
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState()
+  const [userData, setUserData] = useState()
+
 
   console.log(isLoggedIn)
   return (
     <div>
 
      <Routes>
-        <Route  path="/" element={<LoginPage setUserId={setUserId} setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route  path="/MainMenu" element={<MainMenu isLoggedIn={isLoggedIn}/>} />
+        <Route  path="/" element={<LoginPage setUserData={setUserData} setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route  path="/MainMenu" element={<MainMenu userData={userData} isLoggedIn={isLoggedIn}/>} />
         <Route  path="/Register" element={<Register isLoggedIn={isLoggedIn}/>} />
-        <Route path="yoursentmessages" element={<CivilianArea userId={userId}/>}/>
+        <Route  path="/yoursentmessages" element={<CivilianArea userData={userData}/>} />
+        <Route  path="/ultraconfidential_area" element={<PoliticianArea userData={userData}/>} />
 
-
-        <Route path="/createmail" element={<SendMailPage userId={userId}/>} >
+        <Route path="/createmail" element={<SendMailPage userData={userData}/>} >
           <Route path="/createmail/:id" element={<SendMailPage/>} />
         </Route>
 
@@ -36,11 +38,11 @@ function App() {
         <Route path="/suggestions" element={<Suggestions/>} />
      </Routes>
 
-     <footer>
+     {/* <footer>
      <div className="total_msgs">
         <TotalMsgs></TotalMsgs>
      </div>
-     </footer>
+     </footer> */}
   
     </div>
   )
