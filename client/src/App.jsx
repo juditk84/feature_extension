@@ -12,22 +12,35 @@ import PoliticianArea from "./pages/PoliticianArea"
 
 // import { Animated, Text, View, StyleSheet, Button, SafeAreaView } from 'react-native'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import AuthContext from './contexts/auth'
+
 
 function App() {
 
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState()
 
+  const authObject = {
+    userData,
+    setUserData,
+    isLoggedIn,
+    setIsLoggedIn
+  }
 
-  console.log(isLoggedIn)
   return (
+  
+  <AuthContext.Provider value={authObject}>
     <div>
 
+      <header className="the_header">{isLoggedIn ? <div>🐸 {userData?.user_name} is logged in 🐸</div> : <div>👹not logged in!👹</div>}</header>
+
      <Routes>
-        <Route  path="/" element={<LoginPage setUserData={setUserData} setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route  path="/MainMenu" element={<MainMenu userData={userData} isLoggedIn={isLoggedIn}/>} />
-        <Route  path="/Register" element={<Register isLoggedIn={isLoggedIn}/>} />
-        <Route  path="/yoursentmessages" element={<CivilianArea userData={userData}/>} />
+        <Route  path="/" element={<LoginPage />} />
+        <Route  path="/MainMenu" element={<MainMenu />} />
+        <Route  path="/Register" element={<Register />} />
+        <Route  path="/yoursentmessages" element={<CivilianArea />} />
         <Route  path="/ultraconfidential_area" element={<PoliticianArea userData={userData}/>} />
 
         <Route path="/createmail" element={<SendMailPage userData={userData}/>} >
@@ -38,13 +51,15 @@ function App() {
         <Route path="/suggestions" element={<Suggestions/>} />
      </Routes>
 
-     {/* <footer>
-     <div className="total_msgs">
-        <TotalMsgs></TotalMsgs>
+     <footer>
+      <br />
+     <div>
+        <Link to="/MainMenu">Home</Link>
      </div>
-     </footer> */}
+     </footer>
   
     </div>
+  </AuthContext.Provider>
   )
 }
 

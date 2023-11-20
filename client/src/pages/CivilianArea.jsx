@@ -1,10 +1,13 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import AuthContext from '../contexts/auth';
 
-export default function CivilianArea( {userData}) {
+export default function CivilianArea() {
   
     const [allMessages, setAllMessages] = useState();
     const [error, setError] = useState("");
+
+    const { userData } = useContext(AuthContext)
 
     useEffect(() => {
 
@@ -38,16 +41,14 @@ export default function CivilianArea( {userData}) {
     }
     
     return (
-        <div>These are your super cool harass-your-representative messages:
+        <div>These are your super cool {userData.user_type === "politician" ? "confuse-the-crowds" : "harass-your-representative"} messages:
             <ul className="messages_list">
 
-            {allMessages?.map(message => <ul className="message"><li><b>SENT TO:</b><br />{message.sent_to}</li> <br />
-                                                                 <li><b>CONTENT:</b><br />{message.body}</li> 
-                                                                 <button onClick={() => deleteMessage(message.id)}>delete</button></ul>)}
+            {allMessages?.map((message, index) => <ul key={index} className="message"><li key="1"><b>SENT TO:</b><br />{message.sent_to}</li> <br />
+                                                                 <li key="2"><b>CONTENT:</b><br />{message.body}</li> 
+                                                                 <button key="3" onClick={() => deleteMessage(message.id)}>delete</button></ul>)}
 
             </ul>
-            
-
         </div>
     )
     }

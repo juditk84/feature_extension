@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom'
-import Register from '../components/Register';
+import AuthContext from '../contexts/auth';
 
-export default function LoginPage({ setIsLoggedIn, setUserData }) {
+export default function LoginPage() {
+
+    const {setUserData, setIsLoggedIn} = useContext(AuthContext);
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -43,7 +45,13 @@ useEffect(() => {}, [])
           //store it locally
           localStorage.setItem("token", data.token);
           setIsLoggedIn(true);
-          setUserData(data);
+
+          const userDataToContext = {
+            user_id: data.user_id,
+            user_name: data.user_name,
+            user_type: data.user_type
+          }
+          setUserData(userDataToContext);
           navigate({pathname: "/MainMenu"});
         } catch (error) {
           console.log(error);

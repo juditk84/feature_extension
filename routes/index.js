@@ -89,7 +89,7 @@ router.post('/messages/', async (req, res, next) =>{
     ("${req.body.sent_to}", "${req.body.sent_to === "all_citizens" ? messageFromPolitician : req.body.body}", 
     "${req.body.user_id}", "${req.body.type}", "${req.body.tone}", "${req.body.goal}");`)
 
-    res.send(data)
+    res.send({message: messageFromPolitician})
 
   }catch(err){ res.status(400).send(err)}
 
@@ -218,17 +218,17 @@ async function createProblematicPolititianMessageToCitizen(type, tone, goal){
               Desired format:
 
               between 3 and 5 frases.
-              Write it always in English, limit the output to 2000 characters tops.`,
+              Write it always in English. Keep it short.`,
         max_tokens: 250,
         best_of: 3,
-        temperature: 0.8,  /// from 0 to 2 how funky do you want it (actually makes it kinda loopy)
+        temperature: 0.4,  /// from 0 to 2 how funky do you want it (actually makes it kinda loopy)
         frequency_penalty: 0.7, // from 2 (min) to -2 (max), how much do you want it to use new words 
       })
       
       console.log("...done")
       const data = completion.choices[0].text;
       
-      console.log(completion)
+
 
       return data
   

@@ -9,7 +9,6 @@
   text-align: left;
 }
 
-
 .message{
 
   border: 5px dashed #A4A19D;
@@ -44,6 +43,19 @@
 }
 
 .politician_form_fields{
+  font-family: 'retro_gaming';
+  background: grey;
   grid-column: 2 / 2;
   /* grid-row: 2; */
+}
+
+.politician_msg{
+  text-align: justify;
+  border: 2px dashed #A4A19D;
+  border-radius: 22px;
+  margin-top: 100px;
+}
+
+.the_header{
+  text-align: left;
 }

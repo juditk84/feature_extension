@@ -1,9 +1,11 @@
 
 import React from 'react'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import AuthContext from '../contexts/auth';
 
-export default function PoliticianArea({userData}) {
+export default function PoliticianArea() {
 
+  const {userData} = useContext(AuthContext);
   const [message, setMessage] = useState();
   const [error, setError] = useState("");
 
@@ -29,7 +31,6 @@ const handleSubmit = async (e, sent_to, body) => {
 
     if (!response.ok) throw new Error(data.message);
 
-    console.log(data)
     setMessage(data)
 
   } catch (err) {
@@ -68,22 +69,19 @@ const handleSubmit = async (e, sent_to, body) => {
           <option value="ask for a boost in the nation's productivity">ask for a boost in the nation's productivity</option>
           <option value="Show off how COOL and AMAZING you are">Show off how COOL and AMAZING you are</option>
           <option value="Command them to build a 40m tall Bronze statue of your dog">Command them to build a 40m tall Bronze statue of your dog</option>
-          <option value="Announce a war agaisnt a rival nation that will require lots of soldier">Announce a war agaisnt a rival nation that will require lots of soldiers</option>
+          <option value="Announce a war against a rival nation that will require lots of soldier">Announce a war agaisnt a rival nation that will require lots of soldiers</option>
           <option value="Claim every first born child for a massive sacrifice to please the Gods">Claim every first born child for a massive sacrifice to please the Gods</option>
-          <option value="crazy">crazy</option>
         </select> <br /> 
 
         <button>DELIVER THE MESSAGE</button>
 
-        {message &&
-        
-        <div>
-          { error ? <div id="error"> {error} </div>
-          : <div></div>}
-        </div>
-        }
-
       </form>
+
+        <div className="politician_msg">
+          { error ? <div id="error"> {error} </div>
+          : <div><br />{message?.message} <br />  .</div>}
+        </div>
+
     </div>
   )
 }
