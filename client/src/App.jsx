@@ -15,7 +15,6 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AuthContext from './contexts/auth'
 
-
 function App() {
 
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ function App() {
   function logout(){
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    navigate({pathname: "./"})
+    navigate({pathname: "./"});
   }
 
   return (
