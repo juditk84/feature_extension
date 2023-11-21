@@ -56,6 +56,14 @@
   margin-top: 100px;
 }
 
-.the_header{
+.the_header_left{
   text-align: left;
+}
+
+.the_header_right{
+  text-align: right;
+}
+
+.the_error_zone{
+  color: red;
 }

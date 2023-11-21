@@ -1,18 +1,21 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import ChooseMagic from '../components/ChooseMagic.jsx'
 import MessageSent from '../components/MessageSent.jsx'
+import AuthContext from '../contexts/auth.js'
 // import CrystalBall from '../components/CrystalBallSprite.jsx'
 
-export default function SendMailPage({userData}) {
+export default function SendMailPage() {
   const [data, setData] = useState([])
   const [error, setError] = useState("");
   const [magicID, setMagic] = useState(1)
   const [loading, setLoading] = useState(false)
   const [ready, setReady] = useState(false)
 
-  // const [message, setMessage] = useState({sentTo: "", body: ""});
+  const {userData} = useContext(AuthContext)
+
+// const [message, setMessage] = useState({sentTo: "", body: ""});
 
 async function getData() {
   try {
