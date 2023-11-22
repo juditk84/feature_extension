@@ -85,11 +85,6 @@ function setAndClean() {
           : <> there's a crystal ball in your future </>}
         </div>
       </div>
-    
-    <footer>
-    <Link id="homebutton" to="/"><button> go home </button> </Link>
-      </footer>
-    
     </div>
     
   )
