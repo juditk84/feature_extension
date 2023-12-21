@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AuthContext from '../contexts/auth';
 
 export default function LoginPage() {
@@ -100,7 +100,6 @@ export default function LoginPage() {
           setIsLoggedIn(true);
 
           const userDataToContext = {
-            user_id: data.user_id,
             user_name: data.user_name,
             user_type: data.user_type
           }

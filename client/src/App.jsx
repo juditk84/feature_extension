@@ -38,7 +38,7 @@ function App() {
   
   <AuthContext.Provider value={authObject}>
     <div>
-      <header className="the_header_left">{isLoggedIn ? <div>🐸 {userData?.user_name} is logged in 🐸<button onClick={logout} className="the_header_right">logout</button></div> 
+      <header className="">{isLoggedIn ? <div>🐸 {userData?.user_name} is logged in 🐸<button onClick={() => logout()} className="">logout</button></div> 
                                                  : <div>👹not logged in!👹</div>}</header>
 
      <Routes>

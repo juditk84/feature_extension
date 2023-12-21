@@ -6,6 +6,8 @@ const OpenAI = require("openai")
 const nodemailer = require('nodemailer') 
 const openai = new OpenAI({apiKey : `${process.env.OPENAI_API_KEY}`})
 
+var userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
+
 // this fct actually sends the email (uses nodemailer)
 // this fct is called in router.get(createmail/id) with a 2sec timeout because some text was coming back "undefined"
 // resolved other bugs at the time so not sure the timeout was necessary
@@ -68,11 +70,11 @@ router.get('/createmail/:id', async (req, res) =>{
 })
 
 // grabs each users list of messages.
-router.get('/messages/:user_id', async (req, res, next) =>{
+router.get('/messages/', userShouldBeLoggedIn, async (req, res, next) =>{
   
   try{
-    const data = await db(`SELECT * FROM messages WHERE user_id = ${req.params.user_id}`)
 
+    const data = await db(`SELECT * FROM messages WHERE user_id = ${req.user_id}`)
     res.send(data)
 
   }catch(err){ res.status(400).send(err)}
@@ -80,14 +82,14 @@ router.get('/messages/:user_id', async (req, res, next) =>{
 })
 
 // insert current message into the messages db taking the user_id into account
-router.post('/messages/', async (req, res, next) =>{
+router.post('/messages/', userShouldBeLoggedIn, async (req, res, next) =>{
   
   try{
     const messageFromPolitician = await createProblematicPolititianMessageToCitizen(req.body.type, req.body.tone, req.body.goal);
     
     const data = await db(`INSERT INTO messages (sent_to, body, user_id, type, tone, goal) VALUES 
     ("${req.body.sent_to}", "${req.body.sent_to === "all_citizens" ? messageFromPolitician : req.body.body}", 
-    "${req.body.user_id}", "${req.body.type}", "${req.body.tone}", "${req.body.goal}");`)
+    "${req.user_id}", "${req.body.type}", "${req.body.tone}", "${req.body.goal}");`)
 
     res.send({message: messageFromPolitician})
 

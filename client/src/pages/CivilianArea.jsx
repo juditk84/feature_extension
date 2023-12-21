@@ -15,13 +15,19 @@ export default function CivilianArea() {
 
     }, [])
 
-
     async function displayMessages() {
         try {
-        const res = await fetch(`/api/messages/${userData.user_id}`)
+        const res = await fetch(`/api/messages/`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: "Bearer " + localStorage.getItem("token")
+              }
+        })
+        console.log(res)
         if (!res.ok) throw new Error(`Oops! ${res.status} ${res.statusText}`)
         
         const data = await res.json()
+        console.log(data)
         setAllMessages(data.data)
         } catch (error) {
         setError(error.message)

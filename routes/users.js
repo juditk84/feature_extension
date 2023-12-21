@@ -1,12 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var jwt = require("jsonwebtoken");
-// var userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 var db = require("../model/helper");
 require("dotenv").config();
 var bcrypt = require("bcrypt");
-const saltRounds = 10;
 
+const saltRounds = 10;
 const supersecret = process.env.SUPER_SECRET;
 
 /* GET users listing. */
@@ -14,16 +13,17 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-
 router.post("/register", async (req, res) => {
   const { username, password, type } = req.body;
 
   try {
+    
     const hash = await bcrypt.hash(password, saltRounds);
 
     await db(
       `INSERT INTO users (username, password, type) VALUES ("${username}", "${hash}", "${type}");`
     );
+
 
     res.send({ message: "Register successful" });
   } catch (err) {

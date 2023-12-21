@@ -23,8 +23,9 @@ const handleSubmit = async (e, sent_to, body) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("token")
       },
-      body: JSON.stringify({ sent_to: "all_citizens", body: "", user_id: +userData.user_id, type: type, tone: tone, goal: goal }),
+      body: JSON.stringify({ sent_to: "all_citizens", body: "", type: type, tone: tone, goal: goal }),
     });
 
     const data = await response.json();
